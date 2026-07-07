@@ -1,10 +1,7 @@
-streamlit>=1.35.0
-tensorflow==2.16.1
-numpy
+streamlit
 pandas
-matplotlib
+numpy
+scikit-learn
+joblib
 Pillow
-opencv-python-headless
-reportlab
-qrcode
 
