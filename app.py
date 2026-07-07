@@ -1,4 +1,3 @@
-# app.py
 import streamlit as st
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -6,6 +5,8 @@ from PIL import Image
 from datetime import datetime
 import os
 from predict import predict_image   # lightweight version
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
 
 # -------------------------------------------------
 # PAGE CONFIGURATION
