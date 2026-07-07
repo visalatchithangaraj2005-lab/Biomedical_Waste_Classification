@@ -158,11 +158,6 @@ if predict_btn:
             history = pd.concat([history,new_data],ignore_index=True)
             history.to_csv(history_file,index=False)
 
-# Read values from Session State
-predicted_class = st.session_state.predicted_class
-confidence = st.session_state.confidence
-probabilities = st.session_state.probabilities
-
 # -------------------------------------------------
 # DISPLAY PREDICTION
 # -------------------------------------------------
