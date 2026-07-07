@@ -210,9 +210,6 @@ else:
 
 # WASTE DESCRIPTION & DISPOSAL
 # -------------------------------------------------
-
-if predicted_class is not None:
-
     st.markdown("---")
     st.subheader("📝 Waste Description")
 
