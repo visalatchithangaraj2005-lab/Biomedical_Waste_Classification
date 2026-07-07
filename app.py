@@ -249,77 +249,76 @@ elif confidence >= 70:
 
 else:
     st.error("🔴 Low Confidence")
-
     # -------------------------------------------------
-    # Biomedical Waste Bin Recommendation
-    # -------------------------------------------------
+# Biomedical Waste Bin Recommendation
+# -------------------------------------------------
 
-    st.markdown("---")
-    st.subheader("🗑 Biomedical Waste Disposal Recommendation")
+st.markdown("---")
+st.subheader("🗑 Biomedical Waste Bin Recommendation")
 
-    if predicted_class.lower() == "infectious":
+if predicted_class.lower() == "infectious":
 
-        st.warning("""
-### 🟡 Yellow Biomedical Waste Bin
+    st.error("""
+## 🔴 Predicted Waste : Infectious Waste
 
-**Examples**
+### 🟡 Recommended Bin : Yellow Biomedical Waste Bin
+
+### Examples
+- Used Face Masks
 - Gloves
-- Masks
 - Cotton
 - Gauze
+- Blood-Stained Dressings
 - Bandages
-- Blood Contaminated Materials
+- Human Tissue Waste
 
-**Treatment**
+### Treatment Method
 ✔ Incineration
-✔ Deep Burial
+
 ✔ Plasma Pyrolysis
 
-⚠ Dispose immediately using PPE.
+✔ Deep Burial
+
+### Safety Instructions
+✅ Wear PPE Kit
+
+✅ Wear Gloves
+
+✅ Seal the Yellow Bag Properly
+
+✅ Do Not Mix with General Waste
+
+⚠ Immediate Disposal Recommended
 """)
 
-    else:
+elif predicted_class.lower() == "general":
 
-        st.success("""
-### 🟢 General Waste Bin
+    st.success("""
+## 🟢 Predicted Waste : General Waste
 
-**Examples**
+### 🟢 Recommended Bin : General Waste Bin
+
+### Examples
 - Paper
-- Plastic
+- Plastic Covers
+- Cardboard
 - Food Waste
-- Packaging
-- Glass
+- Glass Bottles
+- Packaging Materials
 
-**Treatment**
+### Treatment Method
 ✔ Recycling
+
 ✔ Municipal Waste Collection
 
-♻ Dispose in General Waste Bin.
+### Safety Instructions
+✅ Segregate Properly
+
+✅ Keep Away from Infectious Waste
+
+✅ Recycle Whenever Possible
 """)
 
-    # -------------------------------------------------
-    # Prediction Confidence Chart
-    # -------------------------------------------------
-
-    if probabilities is not None:
-
-        st.markdown("---")
-        st.subheader("📊 Prediction Confidence")
-
-        scores = probabilities * 100
-
-        fig, ax = plt.subplots(figsize=(5, 5))
-
-        colors = ["green", "red"]
-
-        ax.bar(["General", "Infectious"], scores, color=colors)
-
-        ax.set_ylim(0, 100)
-        ax.set_ylabel("Confidence (%)")
-        ax.set_title("Prediction Confidence")
-
-        st.pyplot(fig)
-    
 # -------------------------------------------------
 # SAFETY TIPS
 # -------------------------------------------------
