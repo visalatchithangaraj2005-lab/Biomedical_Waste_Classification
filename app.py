@@ -63,12 +63,8 @@ st.sidebar.write("✔ Python\n\n✔ Streamlit\n\n✔ PIL\n\n✔ Matplotlib")
 language = st.sidebar.selectbox("🌐 Select Language", ["English", "தமிழ்"])
 
 if language == "English":
-    st.title("🧪 Biomedical Waste Classification System")
-    st.write("### Developed by Visalatchi T")
     st.write("This application classifies biomedical waste into:\n\n🟢 General Waste\n\n🔴 Infectious Waste\n\nusing a simulated AI model.")
 else:
-    st.title("🧪 தொற்று உயிரியல் மருத்துவக் கழிவு வகைப்படுத்தும் அமைப்பு")
-    st.write("### உருவாக்கியவர்: Visalatchi T")
     st.write("இந்த செயலி உயிரியல் மருத்துவக் கழிவுகளை வகைப்படுத்துகிறது.\n\n🟢 பொதுக் கழிவு\n\n🔴 தொற்று கழிவு\n\nAI மாதிரியை பயன்படுத்துகிறது.")
 
 # -------------------------------------------------
