@@ -177,31 +177,21 @@ if predicted_class is not None:
     display_prediction = predicted_class
 
     if language == "தமிழ்":
+
         if predicted_class.lower() == "general":
             display_prediction = "பொதுக் கழிவு"
-        else:
+
+        elif predicted_class.lower() == "infectious":
             display_prediction = "தொற்று கழிவு"
 
     st.markdown("---")
     st.subheader("🎯 Prediction Result")
 
     st.success(f"### Prediction : {display_prediction}")
+
     st.info(f"Confidence : {confidence:.2f}%")
 
-    st.progress(confidence / 100)
-
-    # Confidence Level
-    if confidence >= 95:
-        st.success("🟢 Prediction Reliability : Very High")
-
-    elif confidence >= 85:
-        st.success("🟢 Prediction Reliability : High")
-
-    elif confidence >= 70:
-        st.warning("🟡 Prediction Reliability : Medium")
-
-    else:
-        st.error("🔴 Prediction Reliability : Low")
+    st.progress(confidence/100)
 
     # -------------------------------------------------
     # Biomedical Waste Bin Recommendation
