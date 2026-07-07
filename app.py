@@ -192,6 +192,45 @@ if predicted_class is not None:
     st.info(f"Confidence : {confidence:.2f}%")
 
     st.progress(confidence/100)
+    # -------------------------------------------------
+# Prediction Confidence Chart
+# -------------------------------------------------
+
+if probabilities is not None:
+
+    st.markdown("---")
+    st.subheader("📊 Prediction Confidence Chart")
+
+    # Convert prediction probabilities to percentages
+    scores = [float(x) * 100 for x in probabilities]
+
+    labels = ["General", "Infectious"]
+
+    fig, ax = plt.subplots(figsize=(6, 4))
+
+    colors = ["green", "red"]
+
+    bars = ax.bar(labels, scores, color=colors)
+
+    ax.set_ylim(0, 100)
+    ax.set_ylabel("Confidence (%)")
+    ax.set_title("AI Prediction Confidence")
+
+    # Display percentage above each bar
+    for bar in bars:
+        height = bar.get_height()
+        ax.text(
+            bar.get_x() + bar.get_width()/2,
+            height + 2,
+            f"{height:.2f}%",
+            ha="center",
+            fontsize=11
+        )
+
+    st.pyplot(fig)
+
+else:
+    st.warning("Prediction confidence is unavailable.")
 
     # -------------------------------------------------
     # Biomedical Waste Bin Recommendation
