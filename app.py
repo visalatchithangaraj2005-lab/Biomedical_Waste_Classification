@@ -107,15 +107,34 @@ if image is not None:
 # -------------------------------------------------
 # PREDICTION
 # -------------------------------------------------
-predicted_class, confidence, probabilities = None, None, None
+
+# Initialize session state
+if "predicted_class" not in st.session_state:
+    st.session_state.predicted_class = None
+
+if "confidence" not in st.session_state:
+    st.session_state.confidence = None
+
+if "probabilities" not in st.session_state:
+    st.session_state.probabilities = None
+
 predict_btn = st.button("🔍 Predict", use_container_width=True)
 
 if predict_btn:
+
     if image is None:
         st.warning("⚠ Please upload or capture an image first.")
+
     else:
+
         with st.spinner("🔄 Predicting..."):
+
             predicted_class, confidence, probabilities = predict_image(image)
+
+            # Save in Session State
+            st.session_state.predicted_class = predicted_class
+            st.session_state.confidence = confidence
+            st.session_state.probabilities = probabilities
 
             # Save Prediction History
             new_data = pd.DataFrame({
@@ -125,170 +144,128 @@ if predict_btn:
                 "Prediction": [predicted_class],
                 "Confidence": [f"{confidence:.2f}"]
             })
+
+            os.makedirs("history", exist_ok=True)
+
             if os.path.exists(history_file):
                 history = pd.read_csv(history_file)
             else:
-                history = pd.DataFrame(columns=["Date", "Time", "Image", "Prediction", "Confidence"])
+                history = pd.DataFrame(
+                    columns=["Date", "Time", "Image", "Prediction", "Confidence"]
+                )
+
             history = pd.concat([history, new_data], ignore_index=True)
             history.to_csv(history_file, index=False)
 
-            # Translate prediction
-            display_prediction = predicted_class
-            if language == "தமிழ்":
-                if predicted_class.lower() == "general":
-                    display_prediction = "பொதுக் கழிவு"
-                elif predicted_class.lower() == "infectious":
-                    display_prediction = "தொற்று கழிவு"
+# Retrieve stored prediction
+predicted_class = st.session_state.predicted_class
+confidence = st.session_state.confidence
+probabilities = st.session_state.probabilities
 
-            # Display Prediction
-            st.success(f"### Prediction : {display_prediction}")
-            st.info(f"Confidence : {confidence:.2f}%")
 # -------------------------------------------------
-# Biomedical Waste Bin Recommendation
+# DISPLAY PREDICTION
 # -------------------------------------------------
-st.markdown("---")
-st.subheader("🗑 Biomedical Waste Disposal Recommendation")
 
-if predicted_class.lower() == "infectious":
-    
-    st.warning("""
-### 🟡 Yellow Bin
+if predicted_class is not None:
 
-**Waste Type:**
-- Human tissues
-- Blood contaminated materials
+    display_prediction = predicted_class
+
+    if language == "தமிழ்":
+        if predicted_class.lower() == "general":
+            display_prediction = "பொதுக் கழிவு"
+        else:
+            display_prediction = "தொற்று கழிவு"
+
+    st.markdown("---")
+    st.subheader("🎯 Prediction Result")
+
+    st.success(f"### Prediction : {display_prediction}")
+    st.info(f"Confidence : {confidence:.2f}%")
+
+    st.progress(confidence / 100)
+
+    # Confidence Level
+    if confidence >= 95:
+        st.success("🟢 Prediction Reliability : Very High")
+
+    elif confidence >= 85:
+        st.success("🟢 Prediction Reliability : High")
+
+    elif confidence >= 70:
+        st.warning("🟡 Prediction Reliability : Medium")
+
+    else:
+        st.error("🔴 Prediction Reliability : Low")
+
+    # -------------------------------------------------
+    # Biomedical Waste Bin Recommendation
+    # -------------------------------------------------
+
+    st.markdown("---")
+    st.subheader("🗑 Biomedical Waste Disposal Recommendation")
+
+    if predicted_class.lower() == "infectious":
+
+        st.warning("""
+### 🟡 Yellow Biomedical Waste Bin
+
+**Examples**
+- Gloves
+- Masks
 - Cotton
 - Gauze
 - Bandages
-- Face Masks
-- Gloves
+- Blood Contaminated Materials
 
-**Treatment Method**
+**Treatment**
 ✔ Incineration
 ✔ Deep Burial
 ✔ Plasma Pyrolysis
 
-⚠ Handle with PPE and dispose immediately.
+⚠ Dispose immediately using PPE.
 """)
 
-else:
+    else:
 
-    st.success("""
+        st.success("""
 ### 🟢 General Waste Bin
 
-**Waste Type**
+**Examples**
 - Paper
 - Plastic
 - Food Waste
 - Packaging
 - Glass
-- Cardboard
 
-**Treatment Method**
+**Treatment**
 ✔ Recycling
 ✔ Municipal Waste Collection
 
-♻ Segregate properly before disposal.
+♻ Dispose in General Waste Bin.
 """)
-    st.progress(confidence / 100)
+
     # -------------------------------------------------
-# Confidence Level
-# -------------------------------------------------
-
-if confidence >= 95:
-    st.success("🟢 Prediction Reliability : Very High")
-
-elif confidence >= 85:
-    st.success("🟢 Prediction Reliability : High")
-
-elif confidence >= 70:
-    st.warning("🟡 Prediction Reliability : Medium")
-
-else:
-    st.error("🔴 Prediction Reliability : Low")
+    # Prediction Confidence Chart
     # -------------------------------------------------
-# WASTE DESCRIPTION & DISPOSAL
-# -------------------------------------------------
 
-if predicted_class is not None:
+    if probabilities is not None:
 
-    st.markdown("---")
-    st.subheader("📝 Waste Description & Disposal")
+        st.markdown("---")
+        st.subheader("📊 Prediction Confidence")
 
-    if predicted_class.lower() == "infectious":
+        scores = probabilities * 100
 
-        st.error("""
-### 🔴 Infectious Biomedical Waste
+        fig, ax = plt.subplots(figsize=(5, 5))
 
-**Description:**
-Infectious biomedical waste contains materials contaminated with blood,
-body fluids, microorganisms, bacteria, viruses, or other infectious agents.
+        colors = ["green", "red"]
 
-#### Common Examples
-- Used Gloves
-- Face Masks
-- Cotton
-- Gauze
-- Bandages
-- Blood-Stained Dressings
-- Syringes (without needles)
+        ax.bar(["General", "Infectious"], scores, color=colors)
 
-#### Health Risks
-- Spread of infectious diseases
-- Cross-contamination
-- Environmental pollution
-- Risk to healthcare workers
+        ax.set_ylim(0, 100)
+        ax.set_ylabel("Confidence (%)")
+        ax.set_title("Prediction Confidence")
 
-#### Recommended Disposal Bin
-🟡 **Yellow Biomedical Waste Bin**
-
-#### Treatment Method
-✔ Incineration
-✔ Deep Burial
-✔ Plasma Pyrolysis
-
-#### Safety Precautions
-✔ Wear gloves and PPE
-✔ Seal waste in a yellow biomedical bag
-✔ Do not mix with general waste
-✔ Dispose immediately after use
-""")
-
-    elif predicted_class.lower() == "general":
-
-        st.success("""
-### 🟢 General Waste
-
-**Description:**
-General biomedical waste is non-infectious waste that does not contain
-harmful microorganisms or hazardous biological materials.
-
-#### Common Examples
-- Paper
-- Plastic Covers
-- Food Waste
-- Cardboard
-- Glass Bottles
-- Packaging Materials
-- Clean Plastic Containers
-
-#### Health Risks
-- Low risk to humans
-- Environmentally safe when segregated properly
-- Mostly recyclable
-
-#### Recommended Disposal Bin
-🟢 **General Waste Bin**
-
-#### Treatment Method
-✔ Recycling
-✔ Municipal Waste Collection
-
-#### Safety Precautions
-✔ Segregate recyclable materials
-✔ Avoid mixing with infectious waste
-✔ Follow municipal waste disposal guidelines
-""")
+        st.pyplot(fig)
     
 # -------------------------------------------------
 # SAFETY TIPS
