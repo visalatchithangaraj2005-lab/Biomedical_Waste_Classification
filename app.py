@@ -13,6 +13,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 # -------------------------------------------------
 st.set_page_config(
     page_icon="🧪",
+    page_title="Biomedical Waste Classification",
     layout="wide",
     initial_sidebar_state="expanded"
 )
