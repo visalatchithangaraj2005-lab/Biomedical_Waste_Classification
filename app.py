@@ -19,8 +19,6 @@ st.set_page_config(
 )
 
 st.markdown("---")
-st.header("📊 Dashboard")
-
 history_file = "history/prediction_history.csv"
 
 if os.path.exists(history_file):
