@@ -206,17 +206,21 @@ elif confidence >= 70:
 
 else:
     st.error("🔴 Prediction Reliability : Low")
-
+    # -------------------------------------------------
 # WASTE DESCRIPTION & DISPOSAL
 # -------------------------------------------------
+
+if predicted_class is not None:
+
     st.markdown("---")
-    st.subheader("📝 Waste Description")
+    st.subheader("📝 Waste Description & Disposal")
 
     if predicted_class.lower() == "infectious":
 
         st.error("""
 ### 🔴 Infectious Biomedical Waste
 
+**Description:**
 Infectious biomedical waste contains materials contaminated with blood,
 body fluids, microorganisms, bacteria, viruses, or other infectious agents.
 
@@ -226,9 +230,8 @@ body fluids, microorganisms, bacteria, viruses, or other infectious agents.
 - Cotton
 - Gauze
 - Bandages
+- Blood-Stained Dressings
 - Syringes (without needles)
-- Blood-stained materials
-- Dressings
 
 #### Health Risks
 - Spread of infectious diseases
@@ -236,16 +239,27 @@ body fluids, microorganisms, bacteria, viruses, or other infectious agents.
 - Environmental pollution
 - Risk to healthcare workers
 
-#### Disposal Method
-🟡 Dispose in the **Yellow Biomedical Waste Bin**
-according to Biomedical Waste Management Rules.
+#### Recommended Disposal Bin
+🟡 **Yellow Biomedical Waste Bin**
+
+#### Treatment Method
+✔ Incineration
+✔ Deep Burial
+✔ Plasma Pyrolysis
+
+#### Safety Precautions
+✔ Wear gloves and PPE
+✔ Seal waste in a yellow biomedical bag
+✔ Do not mix with general waste
+✔ Dispose immediately after use
 """)
 
-    else:
+    elif predicted_class.lower() == "general":
 
         st.success("""
-### 🟢 General Biomedical Waste
+### 🟢 General Waste
 
+**Description:**
 General biomedical waste is non-infectious waste that does not contain
 harmful microorganisms or hazardous biological materials.
 
@@ -253,22 +267,29 @@ harmful microorganisms or hazardous biological materials.
 - Paper
 - Plastic Covers
 - Food Waste
-- Packaging Materials
-- Glass Bottles
 - Cardboard
+- Glass Bottles
+- Packaging Materials
 - Clean Plastic Containers
 
 #### Health Risks
 - Low risk to humans
-- Safe when segregated properly
-- Recyclable in many cases
+- Environmentally safe when segregated properly
+- Mostly recyclable
 
-#### Disposal Method
-🟢 Dispose in the **General Waste Bin**
-and follow local muni
-cipal waste management guidelines.
+#### Recommended Disposal Bin
+🟢 **General Waste Bin**
+
+#### Treatment Method
+✔ Recycling
+✔ Municipal Waste Collection
+
+#### Safety Precautions
+✔ Segregate recyclable materials
+✔ Avoid mixing with infectious waste
+✔ Follow municipal waste disposal guidelines
 """)
-
+    
 # -------------------------------------------------
 # SAFETY TIPS
 # -------------------------------------------------
