@@ -302,6 +302,71 @@ Treatment:
 else:
 
     st.info("Please predict an image first.")
+    # -------------------------------------------------
+# WASTE DESCRIPTION
+# -------------------------------------------------
+predicted_class = st.session_state.get("predicted_class", None)
+confidence = st.session_state.get("confidence", 0)
+probabilities = st.session_state.get("probabilities", None)
+
+if predicted_class is not None:
+
+    st.markdown("---")
+    st.subheader("📝 Waste Description")
+
+    if predicted_class.lower() == "infectious":
+
+        st.error("""
+### 🔴 Infectious Biomedical Waste
+
+**Description**
+Infectious biomedical waste contains materials contaminated with blood,
+body fluids, microorganisms, bacteria, viruses, or other infectious agents.
+
+#### Common Examples
+• Used Gloves
+• Face Masks
+• Cotton
+• Gauze
+• Bandages
+• Blood-Stained Dressings
+
+#### Health Risks
+• Spread of infectious diseases
+• Cross-contamination
+• Environmental pollution
+• Risk to healthcare workers
+
+#### Disposal Method
+🟡 Dispose in the **Yellow Biomedical Waste Bin**
+according to Biomedical Waste Management Rules.
+""")
+
+    elif predicted_class.lower() == "general":
+
+        st.success("""
+### 🟢 General Waste
+
+**Description**
+General waste is non-infectious waste that does not contain harmful biological materials.
+
+#### Common Examples
+• Paper
+• Plastic Covers
+• Food Waste
+• Cardboard
+• Glass Bottles
+• Packaging Materials
+
+#### Health Risks
+• Low risk to humans
+• Safe when segregated properly
+• Recyclable in many cases
+
+#### Disposal Method
+🟢 Dispose in the **General Waste Bin**
+and follow local waste management guidelines.
+""")
 
     # -------------------------------------------------
 # PDF REPORT DOWNLOAD
