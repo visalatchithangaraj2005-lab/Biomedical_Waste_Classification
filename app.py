@@ -17,7 +17,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-st.header("CNN-Based Soft Infectious Biomedical Waste Classification System")
+st.header("🧪 CNN-Based Soft Infectious Biomedical Waste Classification System")
 history_file = "history/prediction_history.csv"
 
 if os.path.exists(history_file):
