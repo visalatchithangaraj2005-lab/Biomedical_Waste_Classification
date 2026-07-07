@@ -1,5 +1,5 @@
 import numpy as np
-from import load_model
+import load_model
 from PIL import Image
 
 # Load model
