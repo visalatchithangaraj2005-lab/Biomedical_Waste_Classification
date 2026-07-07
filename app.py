@@ -231,6 +231,24 @@ if probabilities is not None:
 
 else:
     st.warning("Prediction confidence is unavailable.")
+    # -------------------------------------------------
+# Prediction Reliability
+# -------------------------------------------------
+
+st.markdown("---")
+st.subheader("🎯 Prediction Reliability")
+
+if confidence >= 95:
+    st.success("🟢 Very High Confidence")
+
+elif confidence >= 85:
+    st.success("🟢 High Confidence")
+
+elif confidence >= 70:
+    st.warning("🟡 Medium Confidence")
+
+else:
+    st.error("🔴 Low Confidence")
 
     # -------------------------------------------------
     # Biomedical Waste Bin Recommendation
