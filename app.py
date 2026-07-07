@@ -286,7 +286,34 @@ st.success("""
 ✔ Dispose waste immediately after use.
 ✔ Use PPE whenever necessary.
 """)
-    # -------------------------------------------------
+
+# -------------------------------------------------
+# DOWNLOAD HISTORY
+# -------------------------------------------------
+st.markdown("---")
+st.subheader("📥 Download Prediction History")
+
+os.makedirs("history", exist_ok=True)
+if not os.path.exists(history_file):
+    empty_df = pd.DataFrame(columns=["Date", "Time", "Image", "Prediction", "Confidence"])
+    empty_df.to_csv(history_file, index=False)
+
+try:
+    history = pd.read_csv(history_file)
+    if history.empty:
+        st.info("No prediction history available yet.")
+    else:
+        with open(history_file, "rb") as file:
+            st.download_button(
+                label="⬇️ Download Prediction History (CSV)",
+                data=file,
+                file_name="prediction_history.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
+except Exception as e:
+    st.error(f"Error loading prediction history: {e}")
+        # -------------------------------------------------
 # Generate PDF Report
 # -------------------------------------------------
 
@@ -332,32 +359,6 @@ with open(pdf_file,"rb") as pdf:
 
         mime="application/pdf"
     )
-# -------------------------------------------------
-# DOWNLOAD HISTORY
-# -------------------------------------------------
-st.markdown("---")
-st.subheader("📥 Download Prediction History")
-
-os.makedirs("history", exist_ok=True)
-if not os.path.exists(history_file):
-    empty_df = pd.DataFrame(columns=["Date", "Time", "Image", "Prediction", "Confidence"])
-    empty_df.to_csv(history_file, index=False)
-
-try:
-    history = pd.read_csv(history_file)
-    if history.empty:
-        st.info("No prediction history available yet.")
-    else:
-        with open(history_file, "rb") as file:
-            st.download_button(
-                label="⬇️ Download Prediction History (CSV)",
-                data=file,
-                file_name="prediction_history.csv",
-                mime="text/csv",
-                use_container_width=True
-            )
-except Exception as e:
-    st.error(f"Error loading prediction history: {e}")
 
 
 
