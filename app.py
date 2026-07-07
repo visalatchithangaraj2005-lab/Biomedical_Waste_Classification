@@ -256,7 +256,8 @@ else:
 
 st.markdown("---")
 st.subheader("🗑 Biomedical Waste Bin Recommendation")
-
+st.write("Prediction:", predicted_class)
+st.write("Confidence:", confidence)
 if predicted_class.lower() == "infectious":
 
     st.error("""
