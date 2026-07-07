@@ -143,22 +143,117 @@ if predict_btn:
             # Display Prediction
             st.success(f"### Prediction : {display_prediction}")
             st.info(f"Confidence : {confidence:.2f}%")
-            st.progress(confidence / 100)
+# -------------------------------------------------
+# Biomedical Waste Bin Recommendation
+# -------------------------------------------------
 
-            # Confidence Chart
-            st.markdown("---")
-            st.subheader("📊 Prediction Confidence")
-            scores = [p * 100 for p in probabilities]
-            fig, ax = plt.subplots(figsize=(5,5))
-            fig.patch.set_facecolor("#0E1117")
-            ax.set_facecolor("#0E1117")
-            colors = ["#00E676", "#FF1744"]
-            ax.bar(["General", "Infectious"], scores, color=colors)
-            ax.set_ylabel("Confidence (%)", color="white")
-            ax.set_title("Prediction Confidence", color="white", fontsize=16)
-            ax.tick_params(colors="white")
-            st.pyplot(fig)
-            # -------------------------------------------------
+st.markdown("---")
+st.subheader("🗑 Biomedical Waste Disposal Recommendation")
+
+if predicted_class.lower() == "infectious":
+
+    st.warning("""
+### 🟡 Yellow Bin
+
+**Waste Type:**
+- Human tissues
+- Blood contaminated materials
+- Cotton
+- Gauze
+- Bandages
+- Face Masks
+- Gloves
+
+**Treatment Method**
+✔ Incineration
+✔ Deep Burial
+✔ Plasma Pyrolysis
+
+⚠ Handle with PPE and dispose immediately.
+""")
+
+else:
+
+    st.success("""
+### 🟢 General Waste Bin
+
+**Waste Type**
+- Paper
+- Plastic
+- Food Waste
+- Packaging
+- Glass
+- Cardboard
+
+**Treatment Method**
+✔ Recycling
+✔ Municipal Waste Collection
+
+♻ Segregate properly before disposal.
+""")
+    st.progress(confidence / 100)
+    # -------------------------------------------------
+# Confidence Level
+# -------------------------------------------------
+
+if confidence >= 95:
+    st.success("🟢 Prediction Reliability : Very High")
+
+elif confidence >= 85:
+    st.success("🟢 Prediction Reliability : High")
+
+elif confidence >= 70:
+    st.warning("🟡 Prediction Reliability : Medium")
+
+else:
+    st.error("🔴 Prediction Reliability : Low")
+    # -------------------------------------------------
+# Generate PDF Report
+# -------------------------------------------------
+
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+
+styles = getSampleStyleSheet()
+
+pdf_file = "Biomedical_Waste_Report.pdf"
+
+doc = SimpleDocTemplate(pdf_file)
+
+story = []
+
+story.append(Paragraph("<b>Biomedical Waste Classification Report</b>", styles["Title"]))
+
+story.append(Paragraph(f"<b>Date :</b> {datetime.now().strftime('%d-%m-%Y')}", styles["Normal"]))
+
+story.append(Paragraph(f"<b>Time :</b> {datetime.now().strftime('%H:%M:%S')}", styles["Normal"]))
+
+story.append(Paragraph(f"<b>Prediction :</b> {predicted_class}", styles["Normal"]))
+
+story.append(Paragraph(f"<b>Confidence :</b> {confidence:.2f}%", styles["Normal"]))
+
+if predicted_class.lower()=="infectious":
+    disposal="Dispose in Yellow Biomedical Waste Bin"
+else:
+    disposal="Dispose in General Waste Bin"
+
+story.append(Paragraph(f"<b>Disposal :</b> {disposal}", styles["Normal"]))
+
+doc.build(story)
+
+with open(pdf_file,"rb") as pdf:
+
+    st.download_button(
+
+        "📄 Download PDF Report",
+
+        pdf,
+
+        file_name="Biomedical_Waste_Report.pdf",
+
+        mime="application/pdf"
+    )
+
 # WASTE DESCRIPTION & DISPOSAL
 # -------------------------------------------------
 
