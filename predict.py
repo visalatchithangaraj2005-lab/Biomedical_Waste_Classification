@@ -1,5 +1,5 @@
 from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.platypus import SimpleDocTemplate,paragraph
+from reportlab.platypus import SimpleDocTemplate, Paragraph
 import random
 
 def predict_image(image):
