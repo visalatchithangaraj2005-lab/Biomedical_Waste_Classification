@@ -254,72 +254,53 @@ else:
 # Biomedical Waste Bin Recommendation
 # -------------------------------------------------
 
-st.markdown("---")
-st.subheader("🗑 Biomedical Waste Bin Recommendation")
-st.write("Prediction:", predicted_class)
-st.write("Confidence:", confidence)
-if predicted_class.lower() == "infectious":
+if predicted_class is not None:
 
-    st.error("""
-## 🔴 Predicted Waste : Infectious Waste
+    st.markdown("---")
+    st.subheader("🗑 Biomedical Waste Bin Recommendation")
 
-### 🟡 Recommended Bin : Yellow Biomedical Waste Bin
+    if predicted_class.lower() == "infectious":
 
-### Examples
-- Used Face Masks
-- Gloves
-- Cotton
-- Gauze
-- Blood-Stained Dressings
-- Bandages
-- Human Tissue Waste
+        st.error("""
+### 🟡 Yellow Biomedical Waste Bin
 
-### Treatment Method
+Dispose the waste in the **Yellow Biomedical Waste Bin**.
+
+Examples:
+• Gloves
+• Face Mask
+• Cotton
+• Gauze
+• Bandages
+
+Treatment:
 ✔ Incineration
-
 ✔ Plasma Pyrolysis
-
 ✔ Deep Burial
-
-### Safety Instructions
-✅ Wear PPE Kit
-
-✅ Wear Gloves
-
-✅ Seal the Yellow Bag Properly
-
-✅ Do Not Mix with General Waste
-
-⚠ Immediate Disposal Recommended
 """)
 
-elif predicted_class.lower() == "general":
+    elif predicted_class.lower() == "general":
 
-    st.success("""
-## 🟢 Predicted Waste : General Waste
+        st.success("""
+### 🟢 General Waste Bin
 
-### 🟢 Recommended Bin : General Waste Bin
+Dispose the waste in the **General Waste Bin**.
 
-### Examples
-- Paper
-- Plastic Covers
-- Cardboard
-- Food Waste
-- Glass Bottles
-- Packaging Materials
+Examples:
+• Paper
+• Plastic
+• Food Waste
+• Glass
 
-### Treatment Method
+Treatment:
 ✔ Recycling
-
 ✔ Municipal Waste Collection
-
-### Safety Instructions
-✅ Segregate Properly
-
-✅ Keep Away from Infectious Waste
-
-✅ Recycle Whenever Possible
 """)
+
+else:
+
+    st.info("Please predict an image first.")
+
     # -------------------------------------------------
 # PDF REPORT DOWNLOAD
 # -------------------------------------------------
