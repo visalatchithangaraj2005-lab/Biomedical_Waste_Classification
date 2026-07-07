@@ -17,7 +17,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-st.header("🧪 CNN-Based Infectious Biomedical Waste Classification ")
+st.header("🧪 CNN-Based Infectious Waste Classification ")
 
 history_file = "history/prediction_history.csv"
 
