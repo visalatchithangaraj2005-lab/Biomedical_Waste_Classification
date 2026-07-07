@@ -108,12 +108,12 @@ if image is not None:
 # PREDICTION
 # -------------------------------------------------
 
-# Initialize session state
+# Session State
 if "predicted_class" not in st.session_state:
     st.session_state.predicted_class = None
 
 if "confidence" not in st.session_state:
-    st.session_state.confidence = None
+    st.session_state.confidence = 0
 
 if "probabilities" not in st.session_state:
     st.session_state.probabilities = None
@@ -123,6 +123,7 @@ predict_btn = st.button("🔍 Predict", use_container_width=True)
 if predict_btn:
 
     if image is None:
+
         st.warning("⚠ Please upload or capture an image first.")
 
     else:
@@ -131,33 +132,38 @@ if predict_btn:
 
             predicted_class, confidence, probabilities = predict_image(image)
 
-            # Save in Session State
             st.session_state.predicted_class = predicted_class
             st.session_state.confidence = confidence
             st.session_state.probabilities = probabilities
 
             # Save Prediction History
-            new_data = pd.DataFrame({
-                "Date": [datetime.now().strftime("%d-%m-%Y")],
-                "Time": [datetime.now().strftime("%H:%M:%S")],
-                "Image": [image_name],
-                "Prediction": [predicted_class],
-                "Confidence": [f"{confidence:.2f}"]
-            })
-
             os.makedirs("history", exist_ok=True)
+
+            new_data = pd.DataFrame({
+                "Date":[datetime.now().strftime("%d-%m-%Y")],
+                "Time":[datetime.now().strftime("%H:%M:%S")],
+                "Image":[image_name],
+                "Prediction":[predicted_class],
+                "Confidence":[f"{confidence:.2f}"]
+            })
 
             if os.path.exists(history_file):
                 history = pd.read_csv(history_file)
             else:
                 history = pd.DataFrame(
-                    columns=["Date", "Time", "Image", "Prediction", "Confidence"]
+                    columns=[
+                        "Date",
+                        "Time",
+                        "Image",
+                        "Prediction",
+                        "Confidence"
+                    ]
                 )
 
-            history = pd.concat([history, new_data], ignore_index=True)
-            history.to_csv(history_file, index=False)
+            history = pd.concat([history,new_data],ignore_index=True)
+            history.to_csv(history_file,index=False)
 
-# Retrieve stored prediction
+# Read values from Session State
 predicted_class = st.session_state.predicted_class
 confidence = st.session_state.confidence
 probabilities = st.session_state.probabilities
