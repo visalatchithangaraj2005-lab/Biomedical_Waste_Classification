@@ -1,5 +1,5 @@
 import numpy as np
-from tensorflow import load_model
+from import load_model
 from PIL import Image
 
 # Load model
