@@ -1,4 +1,5 @@
-# predict.py
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import SimpleDocTemplate,paragraph
 import random
 
 def predict_image(image):
