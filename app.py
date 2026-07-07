@@ -109,15 +109,9 @@ if image is not None:
 # PREDICTION
 # -------------------------------------------------
 
-# Session State
-if "predicted_class" not in st.session_state:
-    st.session_state.predicted_class = None
-
-if "confidence" not in st.session_state:
-    st.session_state.confidence = 0
-
-if "probabilities" not in st.session_state:
-    st.session_state.probabilities = None
+predicted_class = st.session_state.get("predicted_class", None)
+confidence = st.session_state.get("confidence", 0)
+probabilities = st.session_state.get("probabilities", None)
 
 predict_btn = st.button("🔍 Predict", use_container_width=True)
 
@@ -172,7 +166,9 @@ probabilities = st.session_state.probabilities
 # -------------------------------------------------
 # DISPLAY PREDICTION
 # -------------------------------------------------
-
+predicted_class = st.session_state.get("predicted_class", None)
+confidence = st.session_state.get("confidence", 0)
+probabilities = st.session_state.get("probabilities", None)
 if predicted_class is not None:
 
     display_prediction = predicted_class
@@ -196,7 +192,9 @@ if predicted_class is not None:
     # -------------------------------------------------
 # Prediction Confidence Chart
 # -------------------------------------------------
-
+predicted_class = st.session_state.get("predicted_class", None)
+confidence = st.session_state.get("confidence", 0)
+probabilities = st.session_state.get("probabilities", None)
 if probabilities is not None:
 
     st.markdown("---")
@@ -235,7 +233,9 @@ else:
     # -------------------------------------------------
 # Prediction Reliability
 # -------------------------------------------------
-
+predicted_class = st.session_state.get("predicted_class", None)
+confidence = st.session_state.get("confidence", 0)
+probabilities = st.session_state.get("probabilities", None)
 st.markdown("---")
 st.subheader("🎯 Prediction Reliability")
 
@@ -269,15 +269,23 @@ if predicted_class is not None:
 Dispose the waste in the **Yellow Biomedical Waste Bin**.
 
 Examples:
+
 • Gloves
+
 • Face Mask
+
 • Cotton
+
 • Gauze
+
 • Bandages
 
 Treatment:
+
 ✔ Incineration
+
 ✔ Plasma Pyrolysis
+
 ✔ Deep Burial
 """)
 
@@ -289,13 +297,19 @@ Treatment:
 Dispose the waste in the **General Waste Bin**.
 
 Examples:
+
 • Paper
+
 • Plastic
+
 • Food Waste
+
 • Glass
 
 Treatment:
+
 ✔ Recycling
+
 ✔ Municipal Waste Collection
 """)
 
@@ -324,17 +338,27 @@ Infectious biomedical waste contains materials contaminated with blood,
 body fluids, microorganisms, bacteria, viruses, or other infectious agents.
 
 #### Common Examples
+
 • Used Gloves
+
 • Face Masks
+
 • Cotton
+
 • Gauze
+
 • Bandages
+
 • Blood-Stained Dressings
 
 #### Health Risks
+
 • Spread of infectious diseases
+
 • Cross-contamination
+
 • Environmental pollution
+
 • Risk to healthcare workers
 
 #### Disposal Method
@@ -351,16 +375,25 @@ according to Biomedical Waste Management Rules.
 General waste is non-infectious waste that does not contain harmful biological materials.
 
 #### Common Examples
+
 • Paper
+
 • Plastic Covers
+
 • Food Waste
+
 • Cardboard
+
 • Glass Bottles
+
 • Packaging Materials
 
 #### Health Risks
+
 • Low risk to humans
+
 • Safe when segregated properly
+
 • Recyclable in many cases
 
 #### Disposal Method
