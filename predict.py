@@ -1,5 +1,6 @@
 import numpy as np
 from PIL import Image
+from pandas import load_model
 
 # Load model
 model = load_model("Model/mobilenetv2_waste_model.keras")
