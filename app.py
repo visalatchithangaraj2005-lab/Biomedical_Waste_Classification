@@ -146,12 +146,12 @@ if predict_btn:
 # -------------------------------------------------
 # Biomedical Waste Bin Recommendation
 # -------------------------------------------------
-
+if predicted_class is not None:
 st.markdown("---")
 st.subheader("🗑 Biomedical Waste Disposal Recommendation")
 
 if predicted_class.lower() == "infectious":
-
+    
     st.warning("""
 ### 🟡 Yellow Bin
 
