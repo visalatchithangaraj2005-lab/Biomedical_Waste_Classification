@@ -207,52 +207,6 @@ elif confidence >= 70:
 
 else:
     st.error("🔴 Prediction Reliability : Low")
-    # -------------------------------------------------
-# Generate PDF Report
-# -------------------------------------------------
-
-from reportlab.platypus import SimpleDocTemplate, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
-
-styles = getSampleStyleSheet()
-
-pdf_file = "Biomedical_Waste_Report.pdf"
-
-doc = SimpleDocTemplate(pdf_file)
-
-story = []
-
-story.append(Paragraph("<b>Biomedical Waste Classification Report</b>", styles["Title"]))
-
-story.append(Paragraph(f"<b>Date :</b> {datetime.now().strftime('%d-%m-%Y')}", styles["Normal"]))
-
-story.append(Paragraph(f"<b>Time :</b> {datetime.now().strftime('%H:%M:%S')}", styles["Normal"]))
-
-story.append(Paragraph(f"<b>Prediction :</b> {predicted_class}", styles["Normal"]))
-
-story.append(Paragraph(f"<b>Confidence :</b> {confidence:.2f}%", styles["Normal"]))
-
-if predicted_class.lower()=="infectious":
-    disposal="Dispose in Yellow Biomedical Waste Bin"
-else:
-    disposal="Dispose in General Waste Bin"
-
-story.append(Paragraph(f"<b>Disposal :</b> {disposal}", styles["Normal"]))
-
-doc.build(story)
-
-with open(pdf_file,"rb") as pdf:
-
-    st.download_button(
-
-        "📄 Download PDF Report",
-
-        pdf,
-
-        file_name="Biomedical_Waste_Report.pdf",
-
-        mime="application/pdf"
-    )
 
 # WASTE DESCRIPTION & DISPOSAL
 # -------------------------------------------------
@@ -332,7 +286,52 @@ st.success("""
 ✔ Dispose waste immediately after use.
 ✔ Use PPE whenever necessary.
 """)
+    # -------------------------------------------------
+# Generate PDF Report
+# -------------------------------------------------
 
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+from reportlab.lib.styles import getSampleStyleSheet
+
+styles = getSampleStyleSheet()
+
+pdf_file = "Biomedical_Waste_Report.pdf"
+
+doc = SimpleDocTemplate(pdf_file)
+
+story = []
+
+story.append(Paragraph("<b>Biomedical Waste Classification Report</b>", styles["Title"]))
+
+story.append(Paragraph(f"<b>Date :</b> {datetime.now().strftime('%d-%m-%Y')}", styles["Normal"]))
+
+story.append(Paragraph(f"<b>Time :</b> {datetime.now().strftime('%H:%M:%S')}", styles["Normal"]))
+
+story.append(Paragraph(f"<b>Prediction :</b> {predicted_class}", styles["Normal"]))
+
+story.append(Paragraph(f"<b>Confidence :</b> {confidence:.2f}%", styles["Normal"]))
+
+if predicted_class.lower()=="infectious":
+    disposal="Dispose in Yellow Biomedical Waste Bin"
+else:
+    disposal="Dispose in General Waste Bin"
+
+story.append(Paragraph(f"<b>Disposal :</b> {disposal}", styles["Normal"]))
+
+doc.build(story)
+
+with open(pdf_file,"rb") as pdf:
+
+    st.download_button(
+
+        "📄 Download PDF Report",
+
+        pdf,
+
+        file_name="Biomedical_Waste_Report.pdf",
+
+        mime="application/pdf"
+    )
 # -------------------------------------------------
 # DOWNLOAD HISTORY
 # -------------------------------------------------
