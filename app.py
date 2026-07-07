@@ -158,6 +158,71 @@ if predict_btn:
             ax.set_title("Prediction Confidence", color="white", fontsize=16)
             ax.tick_params(colors="white")
             st.pyplot(fig)
+            # -------------------------------------------------
+# WASTE DESCRIPTION & DISPOSAL
+# -------------------------------------------------
+
+if predicted_class is not None:
+
+    st.markdown("---")
+    st.subheader("📝 Waste Description")
+
+    if predicted_class.lower() == "infectious":
+
+        st.error("""
+### 🔴 Infectious Biomedical Waste
+
+Infectious biomedical waste contains materials contaminated with blood,
+body fluids, microorganisms, bacteria, viruses, or other infectious agents.
+
+#### Common Examples
+- Used Gloves
+- Face Masks
+- Cotton
+- Gauze
+- Bandages
+- Syringes (without needles)
+- Blood-stained materials
+- Dressings
+
+#### Health Risks
+- Spread of infectious diseases
+- Cross-contamination
+- Environmental pollution
+- Risk to healthcare workers
+
+#### Disposal Method
+🟡 Dispose in the **Yellow Biomedical Waste Bin**
+according to Biomedical Waste Management Rules.
+""")
+
+    else:
+
+        st.success("""
+### 🟢 General Biomedical Waste
+
+General biomedical waste is non-infectious waste that does not contain
+harmful microorganisms or hazardous biological materials.
+
+#### Common Examples
+- Paper
+- Plastic Covers
+- Food Waste
+- Packaging Materials
+- Glass Bottles
+- Cardboard
+- Clean Plastic Containers
+
+#### Health Risks
+- Low risk to humans
+- Safe when segregated properly
+- Recyclable in many cases
+
+#### Disposal Method
+🟢 Dispose in the **General Waste Bin**
+and follow local muni
+cipal waste management guidelines.
+""")
 
 # -------------------------------------------------
 # SAFETY TIPS
