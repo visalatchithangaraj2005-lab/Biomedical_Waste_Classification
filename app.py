@@ -1,10 +1,11 @@
+# app.py
 import streamlit as st
 import matplotlib.pyplot as plt
 import pandas as pd
 from PIL import Image
 from datetime import datetime
 import os
-from predict import predict_image
+from predict import predict_image   # lightweight version
 
 # -------------------------------------------------
 # PAGE CONFIGURATION
@@ -41,31 +42,6 @@ if os.path.exists(history_file):
         st.info("No predictions available.")
 
 # -------------------------------------------------
-# CUSTOM CSS
-# -------------------------------------------------
-st.markdown("""
-<style>
-.stApp{background-color:#0E1117;color:#FFFFFF;}
-.main .block-container{background-color:#0E1117;padding:2rem;}
-section[data-testid="stSidebar"]{background:#161B22;}
-section[data-testid="stSidebar"] *{color:white;}
-h1,h2,h3,h4,h5,h6{color:#00E5FF;}
-p,label,div,span{color:white;}
-div[data-testid="metric-container"]{background:#1C2430;border-radius:15px;padding:20px;border:1px solid #2F3A4D;box-shadow:0px 0px 12px rgba(0,229,255,0.15);}
-div[data-testid="metric-container"] label{color:#BBBBBB;}
-.stButton>button{width:100%;height:48px;border-radius:12px;background:#00BFFF;color:white;border:none;font-size:18px;font-weight:bold;}
-.stButton>button:hover{background:#0099CC;}
-[data-testid="stFileUploader"]{background:#1C2430;border-radius:12px;padding:15px;}
-.stSuccess{background:#123524;}
-.stInfo{background:#132238;}
-.stWarning{background:#3A2A00;}
-.stError{background:#3A1414;}
-[data-testid="stDataFrame"]{background:#161B22;}
-hr{border:1px solid #2B3545;}
-</style>
-""", unsafe_allow_html=True)
-
-# -------------------------------------------------
 # SIDEBAR
 # -------------------------------------------------
 st.sidebar.image("images/logo.png", width=220)
@@ -75,13 +51,13 @@ st.sidebar.success("👩‍💻 Developed by")
 st.sidebar.markdown("## Visalatchi T")
 st.sidebar.markdown("Biomedical Engineering Student")
 st.sidebar.markdown("---")
-st.sidebar.info("🤖 MobileNetV2 AI Model")
+st.sidebar.info("🤖 Simulated AI Model")
 st.sidebar.markdown("---")
 st.sidebar.subheader("Waste Categories")
 st.sidebar.write("🟢 General Waste\n\n🔴 Infectious Waste")
 st.sidebar.markdown("---")
 st.sidebar.subheader("Technologies")
-st.sidebar.write("✔ Python\n\n✔ TensorFlow\n\n✔ Streamlit\n\n✔ MobileNetV2")
+st.sidebar.write("✔ Python\n\n✔ Streamlit\n\n✔ PIL\n\n✔ Matplotlib")
 
 # -------------------------------------------------
 # LANGUAGE SELECTION
@@ -89,13 +65,13 @@ st.sidebar.write("✔ Python\n\n✔ TensorFlow\n\n✔ Streamlit\n\n✔ MobileNet
 language = st.sidebar.selectbox("🌐 Select Language", ["English", "தமிழ்"])
 
 if language == "English":
-    st.title("🧪 CNN-Based Soft Infectious Biomedical Waste Classification System")
+    st.title("🧪 Biomedical Waste Classification System")
     st.write("### Developed by Visalatchi T")
-    st.write("This application classifies biomedical waste into:\n\n🟢 General Waste\n\n🔴 Infectious Waste\n\nusing MobileNetV2.")
+    st.write("This application classifies biomedical waste into:\n\n🟢 General Waste\n\n🔴 Infectious Waste\n\nusing a simulated AI model.")
 else:
     st.title("🧪 தொற்று உயிரியல் மருத்துவக் கழிவு வகைப்படுத்தும் அமைப்பு")
     st.write("### உருவாக்கியவர்: Visalatchi T")
-    st.write("இந்த செயலி உயிரியல் மருத்துவக் கழிவுகளை வகைப்படுத்துகிறது.\n\n🟢 பொதுக் கழிவு\n\n🔴 தொற்று கழிவு\n\nMobileNetV2 மாதிரியை பயன்படுத்துகிறது.")
+    st.write("இந்த செயலி உயிரியல் மருத்துவக் கழிவுகளை வகைப்படுத்துகிறது.\n\n🟢 பொதுக் கழிவு\n\n🔴 தொற்று கழிவு\n\nAI மாதிரியை பயன்படுத்துகிறது.")
 
 # -------------------------------------------------
 # IMAGE INPUT
@@ -172,7 +148,7 @@ if predict_btn:
             # Confidence Chart
             st.markdown("---")
             st.subheader("📊 Prediction Confidence")
-            scores = probabilities * 100
+            scores = [p * 100 for p in probabilities]
             fig, ax = plt.subplots(figsize=(5,5))
             fig.patch.set_facecolor("#0E1117")
             ax.set_facecolor("#0E1117")
@@ -184,73 +160,8 @@ if predict_btn:
             st.pyplot(fig)
 
 # -------------------------------------------------
-# WASTE DESCRIPTION & DISPOSAL
+# SAFETY TIPS
 # -------------------------------------------------
-
-if predicted_class is not None:
-
-    st.markdown("---")
-    st.subheader("📝 Waste Description")
-
-    if predicted_class.lower() == "infectious":
-
-        st.error("""
-### 🔴 Infectious Biomedical Waste
-
-Infectious biomedical waste contains materials contaminated with blood,
-body fluids, microorganisms, bacteria, viruses, or other infectious agents.
-
-#### Common Examples
-- Used Gloves
-- Face Masks
-- Cotton
-- Gauze
-- Bandages
-- Syringes (without needles)
-- Blood-stained materials
-- Dressings
-
-#### Health Risks
-- Spread of infectious diseases
-- Cross-contamination
-- Environmental pollution
-- Risk to healthcare workers
-
-#### Disposal Method
-🟡 Dispose in the **Yellow Biomedical Waste Bin**
-according to Biomedical Waste Management Rules.
-""")
-
-    else:
-
-        st.success("""
-### 🟢 General Biomedical Waste
-
-General biomedical waste is non-infectious waste that does not contain
-harmful microorganisms or hazardous biological materials.
-
-#### Common Examples
-- Paper
-- Plastic Covers
-- Food Waste
-- Packaging Materials
-- Glass Bottles
-- Cardboard
-- Clean Plastic Containers
-
-#### Health Risks
-- Low risk to humans
-- Safe when segregated properly
-- Recyclable in many cases
-
-#### Disposal Method
-🟢 Dispose in the **General Waste Bin**
-and follow local muni
-cipal waste management guidelines.
-""")
-# -------------------------------------------------------
-# Biomedical Safety Tips
-# -------------------------------------------------------
 st.markdown("---")
 st.subheader("🩺 Biomedical Safety Tips")
 st.success("""
@@ -261,28 +172,20 @@ st.success("""
 ✔ Dispose waste immediately after use.
 ✔ Use PPE whenever necessary.
 """)
+
 # -------------------------------------------------
-# Download Prediction History
+# DOWNLOAD HISTORY
 # -------------------------------------------------
 st.markdown("---")
 st.subheader("📥 Download Prediction History")
 
-# Create history folder if it doesn't exist
 os.makedirs("history", exist_ok=True)
-
-history_file = "history/prediction_history.csv"
-
-# Create an empty CSV if it doesn't exist
 if not os.path.exists(history_file):
-    empty_df = pd.DataFrame(
-        columns=["Date", "Time", "Image", "Prediction", "Confidence"]
-    )
+    empty_df = pd.DataFrame(columns=["Date", "Time", "Image", "Prediction", "Confidence"])
     empty_df.to_csv(history_file, index=False)
 
-# Download button
 try:
     history = pd.read_csv(history_file)
-
     if history.empty:
         st.info("No prediction history available yet.")
     else:
@@ -294,8 +197,8 @@ try:
                 mime="text/csv",
                 use_container_width=True
             )
-
 except Exception as e:
     st.error(f"Error loading prediction history: {e}")
+
 
 
