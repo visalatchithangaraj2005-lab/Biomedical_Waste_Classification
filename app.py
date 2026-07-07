@@ -306,7 +306,9 @@ else:
     # -------------------------------------------------
 # PDF REPORT DOWNLOAD
 # -------------------------------------------------
-
+predicted_class = st.session_state.get("predicted_class", None)
+confidence = st.session_state.get("confidence", 0)
+probabilities = st.session_state.get("probabilities", None)
 if predicted_class is not None:
 
     st.markdown("---")
