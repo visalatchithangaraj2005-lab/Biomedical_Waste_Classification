@@ -32,10 +32,15 @@ if os.path.exists(history_file):
         avg = history["Confidence"].mean()
 
         c1, c2, c3, c4 = st.columns(4)
+        
         c1.metric("📂 Total", total)
+        
         c2.metric("🟢 General", general)
+        
         c3.metric("🔴 Infectious", infectious)
+        
         c4.metric("🎯 Avg Confidence", f"{avg:.2f}%")
+        
     else:
         st.info("No predictions available.")
 
