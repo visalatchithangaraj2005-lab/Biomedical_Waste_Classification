@@ -531,10 +531,15 @@ st.markdown("---")
 st.subheader("🩺 Biomedical Safety Tips")
 st.success("""
 ✔ Always wear gloves.
+
 ✔ Wash hands after handling biomedical waste.
+
 ✔ Do not mix infectious and general waste.
+
 ✔ Follow color-coded waste segregation.
+
 ✔ Dispose waste immediately after use.
+
 ✔ Use PPE whenever necessary.
 """)
 
