@@ -4,6 +4,7 @@ import pandas as pd
 from PIL import Image
 from datetime import datetime
 import os
+from predict import predict_image
 
 # -------------------------------------------------
 # PAGE CONFIGURATION
